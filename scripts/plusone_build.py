@@ -149,11 +149,18 @@ def main() -> None:
         if f"{key}={value}" not in sdkconfig:
             print(f"[WARN] sdkconfig 里没有生效：{key}", file=sys.stderr)
 
-    part_csv = ROOT / "partitions" / "v2" / "8m_plusone.csv"
+    part_csv = None
+    for item in append:
+        if item.startswith("CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="):
+            part_csv = ROOT / item.split("=", 1)[1].strip('"')
+    if part_csv is None:
+        sys.exit("config.json 里没有 CONFIG_PARTITION_TABLE_CUSTOM_FILENAME")
+    print(f"分区表：{part_csv.relative_to(ROOT)}")
+    app_part = "factory" if partition_size(part_csv, "factory") else "ota_0"
     app_bin = ROOT / "build" / "xiaozhi.bin"
     assets_bin = ROOT / "build" / "generated_assets.bin"
     ok = True
-    for label, path, part in (("app", app_bin, "factory"), ("assets", assets_bin, "assets")):
+    for label, path, part in (("app", app_bin, app_part), ("assets", assets_bin, "assets")):
         limit = partition_size(part_csv, part)
         size = path.stat().st_size if path.exists() else None
         if size is None or limit is None:
