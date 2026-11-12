@@ -18,3 +18,6 @@ main/mmap_generate_emoji.h
 *.bin
 mmap_generate_*.h
 .clangd
+
+# Plusone: private build settings (server address)
+plusone.local.env
