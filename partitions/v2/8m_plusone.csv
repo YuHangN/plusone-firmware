@@ -1,0 +1,10 @@
+# ESP-IDF Partition Table (Plusone: 8MB flash, single app + 5MB assets)
+# The Chinese Multinet model needed for a custom wake word (mn7_cn, ~2.6MB)
+# does not fit the 2MB assets partition of 8m.csv, so this table drops the
+# second OTA app slot. Firmware is updated over USB instead of over the air.
+# Name,   Type, SubType, Offset,  Size, Flags
+nvs,      data, nvs,     0x9000,    0x4000,
+otadata,  data, ota,     0xd000,    0x2000,
+phy_init, data, phy,     0xf000,    0x1000,
+factory,  app,  factory, 0x10000,   0x2f0000,
+assets,   data, spiffs,  0x300000,  5M

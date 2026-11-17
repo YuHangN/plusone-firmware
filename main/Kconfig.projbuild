@@ -6,6 +6,13 @@ config OTA_URL
     help
         The application will access this URL to check for new firmwares and server address.
 
+config WIFI_CONFIG_SSID_PREFIX
+    string "Wi-Fi config hotspot SSID prefix"
+    default "Xiaozhi"
+    help
+        Prefix of the hotspot the device opens in Wi-Fi config mode.
+        The hotspot shows up as <prefix>-XXXX.
+
 choice
     prompt "Flash Assets"
     default FLASH_DEFAULT_ASSETS if !USE_EMOTE_MESSAGE_STYLE
